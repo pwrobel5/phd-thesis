@@ -1,0 +1,154 @@
+\section{Density Functional based Tight-Binding}
+
+The total energy of a~system in DFT is equal:
+\begin{equation}
+    E[\rho] = \sum_{i = 1}^N \bra{\phi_i} \left(-\frac{1}{2} \Delta + \int_{\mathbb{R}^3} \nu \right) \ket{\phi_i} + J[\rho] + E_{\text{xc}}[\rho] + E_{\text{nn}},
+\end{equation}
+where $E_{\text{nn}}$ is the interaction energy between atomic nuclei.
+
+In a~system where all of the atoms are free and neutral, the electron density is equal $\rho_0$ and differs from the true density $\rho$ by a~term $\delta \rho$. It is interpreted as $\rho_0$ is a~density of the system without any charge transfer, while $\delta \rho$ represents charge fluctuation.
+
+After expansion of $E[\rho]$ around $\rho_0$ to second order in $\delta \rho$:
+\begin{align}
+  \begin{split}
+    E[\delta \rho] &\approx \sum_{i = 1}^N \bra{\phi_i} \left( -\frac{1}{2} \Delta + \nu + \hat{\nu}_{\text{coulomb}}[\rho_0] + \hat{\nu}_{\text{xc}}[\rho_0] \right) \ket{\phi_i} + \\ 
+      &+ \frac{1}{2} \int_{\mathbb{R}^3} \int_{\mathbb{R}^3} \left( \frac{\delta^2 E_{\text{xc}}[\rho_0]}{\delta \rho_1 \delta \rho_2} + \frac{1}{\left| \vec{r}_1 - \vec{r}_2 \right|} \right) \delta \rho_1 \delta \rho_2 \text{d}^3\vec{r}_1 \text{d}^3\vec{r}_2 + \\
+      &- \frac{1}{2} \int_{\mathbb{R}^3} \hat{\nu}_{\text{coulomb}}[\rho_0](\vec{r}) \rho_0(\vec{r}) \text{d}^3\vec{r} + E_{xc}[\rho_0] + E_{nn} +\\
+      &- \int_{\mathbb{R}^3} \hat{\nu}_{\text{xc}}[\rho_0](\vec{r}) \rho_0(\vec{r}) \text{d}^3\vec{r}.
+  \end{split}
+  \label{eq:dftb-energy}
+\end{align}
+
+The first component of the sum in the equation~\ref{eq:dftb-energy} is called the band-structure energy $E_{\text{BS}}$:
+\begin{equation}
+    E_{\text{BS}}[\delta \rho] = \sum_{i = 1}^N \bra{\phi_i} H[\rho_0] \ket{\phi_i},
+\end{equation}
+where the Hamiltonian $H[\rho_0]$ does not depend on the fluctuation $\delta \rho$. The second term in equation~\ref{eq:dftb-energy} is the energy from charge fluctuations $E_{\text{fluct}}[\delta \rho]$:
+\begin{equation}
+    E_{\text{fluct}}[\delta \rho] = \frac{1}{2} \int_{\mathbb{R}^3} \int_{\mathbb{R}^3} \left( \frac{\delta^2 E_{\text{xc}}[\rho_0]}{\delta \rho_1 \delta \rho_2} + \frac{1}{\left| \vec{r}_1 - \vec{r}_2 \right|} \right) \delta \rho_1 \delta \rho_2 \text{d}^3\vec{r}_1 \text{d}^3\vec{r}_2,
+\end{equation}
+and the remaining terms are called repulsive energy $E_{\text{rep}}$:
+\begin{equation}
+    E_{\text{rep}} = - \frac{1}{2} \int_{\mathbb{R}^3} \hat{\nu}_{\text{coulomb}}[\rho_0](\vec{r}) \rho_0(\vec{r}) \text{d}^3\vec{r} + E_{\text{xc}}[\rho_0] + E_{\text{nn}} - \int_{\mathbb{R}^3} \hat{\nu}_{\text{xc}}[\rho_0](\vec{r}) \rho_0(\vec{r}) \text{d}^3\vec{r}.
+\end{equation}
+Thus:
+\begin{equation}
+    E[\delta \rho] = E_{\text{BS}}[\delta \rho] + E_{\text{fluct}}[\delta \rho] + E_{\text{rep}}.
+    \label{eq:energy-dftb}
+\end{equation}
+
+In the so-called zeroth-order DFTB, the $E_{\text{fluct}}$ is neglected.
+
+The last term can be approximated by:
+\begin{equation}
+    E_{\text{rep}} = \sum_{I < J} V_{\text{rep}}^{{\text{IJ}}}(R_{\text{IJ}}),
+\end{equation}
+where $V_{\text{rep}}^{{\text{IJ}}}(R_{\text{IJ}})$ is the repulsive function between atoms of type $I$ and $J$.
+
+Dividing the volume $V$ into partial volumes $V_I$ for every atom:
+\begin{equation}
+    V = \sum_I V_I,
+\end{equation}
+the difference in electron population $\Delta q_I$ on atom $I$ is approximately equal:
+\begin{equation}
+    \Delta q_I \approx \int_{V_I} \delta \rho(\vec{r}) \text{d}^3 \vec{r}.
+\end{equation}
+
+By assuming that $\delta \rho_I(r)$ has a~Gaussian profile with full width at half maximum equal $f_I$, the fluctuation term of the energy can be approximated by:
+\begin{equation}
+    E_{\text{fluct}}[\delta \rho] \approx \frac{1}{2} \sum_{I, J} \gamma_{\text{IJ}}(R_{\text{IJ}}) \Delta q_I \Delta q_J,
+\end{equation}
+where
+\begin{equation}
+    \gamma_{\text{IJ}}(R_{\text{IJ}}) = 
+    \begin{aligned}
+    \begin{cases}
+        U_I, &I = J \\
+        \frac{\text{erf}(C_{\text{IJ}} R_{\text{IJ}})}{R_{\text{IJ}}}, &I \neq J
+    \end{cases}
+    \end{aligned},
+\end{equation}
+where $U_I$ is equal to the difference between ionization energy (IE) and electron affinity (EA):
+\begin{equation}
+    U_I \approx IE_I - EA_I,
+\end{equation}
+and the $C_{\text{IJ}}$:
+\begin{equation}
+    C_{\text{IJ}} = \sqrt{\frac{4 \ln{2}}{f_I^2 + f_J^2}}.
+\end{equation}
+
+By expanding orbitals in the basis $\{ \chi_{\mu} \}$:
+\begin{equation}
+    \phi_i (\vec{r}) = \sum_{\mu} c_{\mu}^i \chi_{\mu}(\vec{r}),
+\end{equation}
+the $E_{\text{BS}}$ can be rewritten in the form:
+\begin{equation}
+    E_{\text{BS}} = \sum_{i = 0}^N \sum_{\mu \nu} c_{\mu}^{i*} c_{\nu}^i H^{0}_{\mu \nu},
+\end{equation}
+where $H^{0}_{\mu \nu}$ are parameters of this method.
+
+By finding a~minimum of energy given by equation~\ref{eq:energy-dftb} with the use of undetermined Lagrange coefficients $\epsilon_i$, an equation analogous to the Kohn-Sham equation in the Density Functional based Tight-Binding (DFTB) is obtained:
+\begin{equation}
+    \sum_{\nu} c_{\nu}^i \left(H_{\mu \nu} - \epsilon_i S_{\mu \nu} \right) = 0,
+    \label{eq:ks-dftb}
+\end{equation}
+where $S_{\mu \nu} = \bra{\chi_{\mu}} \chi_{\nu} \rangle$ represent elements of the overlap matrix and $H_{\mu \nu}$ is expressed as:
+\begin{equation}
+    H_{\mu \nu} = H^{0}_{\mu \nu} + \frac{1}{2} S_{\mu \nu} \sum_K \left(\gamma_{IK} + \gamma_{JK}\right) \Delta q_K, \quad \mu \in I, \nu \in J.
+    \label{eq:dftb-hmunu}
+\end{equation}
+
+With defining charge fluctuation $\zeta_I$ as:
+\begin{equation}
+    \zeta_I = \sum_K \gamma_{IK} \Delta q_K,
+\end{equation}
+and introducing symbol:
+\begin{equation}
+    h^{1}_{\mu \nu} = \frac{1}{2} \left( \zeta_I + \zeta_J \right), \quad \mu \in I, \nu \in J,
+\end{equation}
+equation~\ref{eq:dftb-hmunu} can be rewritten as follows:
+\begin{equation}
+    H_{\mu \nu} = H^{0}_{\mu \nu} + h^{1}_{\mu \nu} S_{\mu \nu},
+\end{equation}
+what can be interpreted as that charge fluctuations shift the element $H_{\mu \nu}$ according to the averaged potentials around $\mu$ and $\nu$ orbitals~\cite{dftb-for-beginners}.
+
+As in the Kohn-Sham method, equation~\ref{eq:ks-dftb} is also solved iteratively: from initial guess the starting set of $\{ \Delta q_I \}$ is used to obtain $H_{\mu \nu}$ and then $\{ c^{i}_{\mu} \}$ which are used to obtain new values of $\{ \Delta q_I \}$~\cite{dftb-1,dftb-3}. Thus, this approach is called the Self Consistent Charge (SCC) DFTB approach in opposite to the one neglecting the $E_{\text{fluct}}$ term~\cite{dftb-2}. Including additionally the third order in $\delta \rho$ in equation~\ref{eq:dftb-energy} leads to the third-order DFTB method (DFTB3)~\cite{dftb-third-order}.
+
+DFTB method is available to use in some software packages, for example in CP2K~\cite{cp2k} and in DFTB+~\cite{dftb-plus}.
+
+\subsection{Slater-Koster parameters}
+
+DFTB method is semi-empirical one, thus it needs arbitrarily set parameters. In standard cases, these parameters are provided via the so-called Slater-Koster's files, which contain the elements of the Hamiltonian $H_{\mu \nu}^{0}$ as well as the elements of the overlap matrix $S_{\mu \nu}$ and spline representation of the repulsive potential $V_{\text{rep}}^{\text{IJ}}(R_{\text{IJ}})$ for every possible element pair in the considered system.
+
+Some sets of parameter with wide uses are available. Among them there are 3ob~\cite{3ob-1,3ob-2,3ob-3,3ob-4}, ob2~\cite{ob2} and mio~\cite{mio} developed for biological systems and matsci for materials~\cite{matsci}. For specific systems tailored parametrizations were developed, e.g. water-matsci with corrections made to successfully reproduce RDFs for water systems~\cite{water-matsci}.
+
+\subsection{Extended Tight Binding}
+
+The main disadvantage of using DFTB is the necessity of having parameters for every pair of elements present in the system. Thus, for a~case with $n$ elements, the number of parameter files is in the order of $\mathcal{O}(n^2)$. Development of own Slater-Koster files is complicated and time-consuming because it needs fitting of the repulsion potential. For the purpose of this work it was a~serious problem, because some of the studied systems contained lithium ions, which are not present in any of the publicly available parameter sets.
+
+Due to such limitations of the standard DFTB approach, Grimme et. al. developed the extended Tight Binding (xTB) method~\cite{xtb} in a~way that avoids using pair-specific parameters. The main target quantities for xTB are structural properties like vibrational frequencies and noncovalent interactions with extension of the standardly used minimal basis set and keeping the minimal number of parameters. So, this xTB variant is called Geometry, Frequency, Noncovalent, extended Tight-Binding (GFN-xTB). It is applicable to all elements with atomic numbers up to~86, thus it is suitable for all systems studied in this work. It has two types of parameters - global and element-specific ones.
+
+In the GFN-xTB approach, the energy is expressed as the following sum:
+\begin{equation}
+    E = E_{\text{el}} + E_{\text{rep}} + E_{\text{disp}} + E_{\text{XB}},
+\end{equation}
+where $E_{\text{el}}$ is the electronic energy calculated similarly as in the DFTB3 approach, $E_{\text{rep}}$ is atom pairwise repulsion energy, $E_{\text{disp}}$ is the dispersion energy and $E_{\text{XB}}$ is the energy of halogen bonding.
+
+The repulsion energy is represented by the potential:
+\begin{equation}
+    E_{\text{rep}} = \sum_{A, B} \frac{Z_{A}^{\text{eff}} Z_{B}^{\text{eff}}}{R_{AB}} e^{-\sqrt{a_A a_B} \left( R_{AB} \right)^{k_f}},
+\end{equation}
+where $Z_A^{\text{eff}}$ and $Z_B^{\text{eff}}$ are effective nuclear charges, $k_f$ is a~global parameter of this method, $a_A$ and $a_B$ are element specific parameters and $R_{AB}$ is the distance between atoms A and~B.
+
+The dispersion energy $E_{\text{disp}}$ is computed as in the D3 correction to DFT~\cite{grimme-d3} without three-body terms.
+
+Finally, the halogen bonding energy is represented as a~modified Lennard-Jones potential:
+\begin{equation}
+    E_{\text{XB}} = \sum_{\text{XB}} f_{\text{dmp}}^{\text{AXB}} k_X \frac{\left( 1 + \left( \frac{R_{\text{cov}, AX}}{R_{AX}} \right)^{12} - k_{X2} \left( \frac{R_{\text{cov}, AX}}{R_{AX}} \right)^{6} \right)}{\left( \frac{R_{\text{cov}, AX}}{R_{AX}} \right)^{12}},
+\end{equation}
+where $R_{\text{cov},AX}$ is the effective covalent distance, $k_X$ and $k_{X2}$ are global parameters, $R_{AX}$ is the distance between halogen bonding acceptor $A$ and the halogen atom $X$ and $f_{\text{dmp}}^{\text{AXB}}$ is the damping function designed in the way that this correction vanishes for nonlinear arrangements of the atoms in a~possible halogen bond ($A$ acceptor, $X$ halogen and $B$ the atom bound to $X$):
+\begin{equation}
+    f_{\text{dmp}}^{\text{AXB}} = \left( \frac{1}{2} - \frac{1}{4} \cos{\theta_{\text{AXB}}} \right)^6.
+\end{equation}
+
+The extended version of the GFN-xTB method called GFN2-xTB was recently published~\cite{gfn-2}. Furthermore, the variant xTB designed for the calculation of ionization potentials IPEA-xTB was also developed~\cite{ipea}.

@@ -1,0 +1,101 @@
+\documentclass[12pt, a4paper]{report}
+\usepackage{import}
+\usepackage{phd-thesis}
+
+\begin{document}
+
+\import{./}{title-page.tex}
+
+\import{./}{podziekowania.tex}
+
+%spis treści
+\tableofcontents
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{List of publications being a~part of the Thesis}
+\printbibliography[title={List of publications being a~part of the Thesis}, keyword=primary]
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{List of other publications}
+\printbibliography[title={List of other publications}, keyword=ternary, resetnumbers]
+
+\cleardoublepage
+\chapter*{List of active conference participations}
+\import{./}{conferences-active.tex}
+
+\onehalfspacing
+\chapter*{Abstract}
+\import{./}{abstract.tex}
+
+\chapter*{Streszczenie}
+\import{./}{streszczenie.tex}
+
+\singlespacing
+\chapter*{List of abbreviations and symbols}
+\import{./}{list-of-abbreviations-and-symbols.tex}
+
+\chapter{Introduction}
+
+\onehalfspacing
+\import{1-introduction}{section1-0.tex}
+\import{1-introduction}{section1-1.tex}
+\import{1-introduction}{section1-2.tex}
+\import{1-introduction}{section1-3.tex}
+\import{1-introduction}{section1-4.tex}
+\import{1-introduction}{section1-5.tex}
+
+\chapter{Theoretical methods}
+
+\import{2-theoretical-methods}{section2-0.tex}
+\import{2-theoretical-methods}{section2-1.tex}
+\import{2-theoretical-methods}{section2-2.tex}
+\import{2-theoretical-methods}{section2-3.tex}
+\import{2-theoretical-methods}{section2-4.tex}
+\import{2-theoretical-methods}{section2-5.tex}
+
+\chapter{Structural data from MD simulations}
+
+\import{3-structural-data-from-md-simulations}{section3-0.tex}
+\import{3-structural-data-from-md-simulations}{section3-1.tex}
+\import{3-structural-data-from-md-simulations}{section3-2.tex}
+\import{3-structural-data-from-md-simulations}{section3-3.tex}
+\import{3-structural-data-from-md-simulations}{section3-4.tex}
+\import{3-structural-data-from-md-simulations}{section3-5.tex}
+\import{3-structural-data-from-md-simulations}{section3-6.tex}
+
+\chapter{IR spectra from AIMD simulations}
+
+\import{4-ir-spectra-from-aimd-simulations}{section4-0.tex}
+\import{4-ir-spectra-from-aimd-simulations}{section4-1.tex}
+\import{4-ir-spectra-from-aimd-simulations}{section4-2.tex}
+\import{4-ir-spectra-from-aimd-simulations}{section4-3.tex}
+\import{4-ir-spectra-from-aimd-simulations}{section4-4.tex}
+\import{4-ir-spectra-from-aimd-simulations}{section4-5.tex}
+
+\chapter{Alternatives to AIMD}
+
+\import{5-alternatives-to-aimd}{section5-0.tex}
+\import{5-alternatives-to-aimd}{section5-1.tex}
+\import{5-alternatives-to-aimd}{section5-2.tex}
+
+\chapter{Summary}
+\import{6-summary}{summary.tex}
+
+\singlespacing
+\cleardoublepage
+\addcontentsline{toc}{chapter}{\listfigurename}
+\listoffigures
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{\listtablename}
+\listoftables
+
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Bibliography}
+\printbibliography[title=Bibliography, keyword=secondary, resetnumbers]
+
+\end{document}
+
+
+% pamiętać o streszczeniu (osobny plik)
+% na końcu lista publikacji + konferencje

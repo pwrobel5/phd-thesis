@@ -1,0 +1,99 @@
+\section{Density Functional Theory}
+
+The electron density for $N$ electron system described by the wavefunction $\Psi$ is defined as:
+\begin{equation}
+    \rho(\vec{r}) = \bra{\Psi} \sum_{i = 1}^{N} \delta(\vec{r}_i - \vec{r}) \ket{\Psi},
+\end{equation}
+and is an observable possible for measurement in the diffraction experiment.
+
+With knowledge of the $\rho(\vec{r})$ it is possible to determine the positions of atomic nuclei, because radial electron density $\rho_{\text{rad}}(r)$:
+\begin{equation}
+    \rho_{\text{rad}}(r) = \frac{1}{4\pi} \int_0^{\pi} \int_0^{2\pi} \rho(\vec{r}) \text{d}\vartheta\text{d}\varphi,
+\end{equation}
+satisfies the nuclear cusp condition:
+\begin{equation}
+    \lim_{r_{\alpha} \rightarrow 0} \left[ \left( \frac{\partial}{\partial r_{\alpha}} + 2 Z_{\alpha} \right) \rho(r_{\alpha}) \right] = 0,
+\end{equation}
+\begin{equation}
+    r_{\alpha} = \left| \vec{r} - \vec{R_{\alpha}} \right|,
+\end{equation}
+where $Z_{\alpha}$ is the charge of the nucleus at the position $\vec{R}_{\alpha}$.
+
+It was realized that it is possible to use formalism based on utilizing electron density instead of wavefunctions, which is consistent with quantum mechanics. The first Hohenberg-Kohm theorem states that~\cite{dft}:
+\begin{theorem}
+    The external potential $\nu$ is uniquely determined to an additive constant by the non-degenerated ground state density $\rho_0$.
+\end{theorem}
+
+So, the mapping from potential $\nu$ to wavefunction $\Psi$ and then to density $\rho$ is reversible.
+
+The second theorem provides the variational principle~\cite{dft}:
+\begin{theorem}
+    The exact electronic energy $E[\rho]$ is the lower bound for energies $E_{\nu}[\rho']$ obtained for any probe $\rho'$ density (reproducing the $\nu$).
+\end{theorem}
+
+These theorems are the fundamentals of the Density Functional Theory (DFT) which is an alternative to quantum mechanics based on wavefunctions.
+
+The nuclear-electron potential energy in equation~\ref{eq:hamiltonian} can be defined as:
+\begin{equation}
+    \hat{V}_{ne} = -\sum_{i = 1}^N \sum_{\alpha = 1}^M \frac{Z_{\alpha}}{\left| \vec{R}_{\alpha} - \vec{r}_i \right|} = \sum_{i = 1}^N \nu_i,
+\end{equation}
+and its average energy expressed in terms of $\rho(\vec{r})$:
+\begin{equation}
+    \bra{\Psi} \hat{V}_{ne} \ket{\Psi} = \bra{\Psi} \sum_{i = 1}^N \nu_i \ket{\Psi} = \int_{\mathbb{R}^3} \nu(\vec{r}) \rho(\vec{r}) \text{d}^3 \vec{r}.
+\end{equation}
+
+According to the variational principle, the energy $E_0$ could be expressed as:
+\begin{equation}
+    E_0 = \min_{\rho} \left[ \int_{\mathbb{R}^3} \nu(\vec{r}) \rho(\vec{r}) \text{d}^3 \vec{r} + F^{\text{HK}}[\rho] \right] = \min_{\rho} E_{\nu}^{\text{HK}}[\rho],
+\end{equation}
+where $F^{\text{HK}}[\rho]$ is the universal functional:
+\begin{equation}
+    F^{\text{HK}}[\rho] = \min_{\Psi \rightarrow \rho} \bra{\Psi} \hat{T}_e + \hat{V}_{ee} \ket{\Psi}.
+\end{equation}
+In general, it is only known that $F^{\text{HK}}[\rho]$ correctly reproducing the system's energy exists, but its exact form is unknown. Thus in practical calculations, different approximations of it are used~\cite{nalewajski-perspectives}.
+
+\subsection{Kohn-Sham method}
+
+In the system of $N$ noninteracting electrons with the potential $\nu_0$ enforcing that the density $\rho$ is identical with the density of the real considered ground state, the eigenproblem of Hamiltonian becomes one-electron problem:
+\begin{equation}
+    \left( -\frac{1}{2} \Delta + \hat{\nu}_0 \right) \phi_i = \varepsilon_i \phi_i,
+\end{equation}
+where $\phi_i$ are the Kohn-Sham spinorbitals. The wavefunction of the whole system is defined as the Slater determinant of Kohn-Sham spinorbitals.
+
+Introducing $T_0$ as the kinetic energy of noninteracting electrons, $J[\rho]$ as the classic energy of interaction of electron density with itself and $E_{\text{xc}}[\rho]$ as the functional containing all other contributions to the system's energy:
+\begin{equation}
+    T_0 = -\frac{1}{2} \sum_{i = 1}^N \bra{\phi_i} \Delta_i \ket{\phi_i},
+\end{equation}
+\begin{equation}
+    J[\rho] = \frac{1}{2} \int_{\mathbb{R}^3} \int_{\mathbb{R}^3} \frac{\rho(\vec{r}_1) \rho(\vec{r}_2)}{\left| \vec{r}_1 = \vec{r}_2\right|} \text{d}^3 \vec{r}_1 \text{d}^3 \vec{r}_2,
+\end{equation}
+the energy of the system can be written in form:
+\begin{equation}
+    E_0 = T_0 + \int_{\mathbb{R}^3} \nu(\vec{r}) \rho(\vec{r}) \text{d}^3 \vec{r} + J[\rho] + E_{\text{xc}}[\rho].
+\end{equation}
+
+By calculation of energy variation with varying the conjugated orbitals $\phi^{*}_i$, setting it as zero and making an unitary transformation of the orbitals, Kohn-Sham equations are obtained:
+\begin{equation}
+    \left[ -\frac{1}{2} \Delta + \nu + \sum_{j = 1}^N \hat{J}_j + \frac{\delta E_{\text{xc}}}{\delta \rho} \right] \phi_i = \varepsilon_i \phi_i,
+\end{equation}
+with $\hat{J}_j$:
+\begin{equation}
+    \hat{J}_j (\vec{r}_2) = \sum_{\sigma_1} \int_{\mathbb{R}^3} \frac{\phi_j^{*} (\vec{r}_1, \sigma_1 \phi_j(\vec{r}_1, \sigma_1)}{\left| \vec{r}_1 - \vec{r}_2 \right|} \text{d}^3 \vec{r}_1.
+\end{equation}
+
+Using symbols:
+\begin{equation}
+    \hat{\nu}_{\text{coulomb}} = \sum_{j = 1}^N \hat{J}_j,
+\end{equation}
+\begin{equation}
+    \hat{\nu}_{\text{xc}} = \frac{\delta E_{\text{xc}}}{\delta \rho},
+\end{equation}
+the Kohn-Sham equations could be rewritten in the following form:
+\begin{equation}
+    \left[ -\frac{1}{2} \Delta_i + \nu + \hat{\nu}_{\text{coulomb}} + \hat{\nu}_{{\text{xc}}} \right] \phi_i = \varepsilon_i \phi_i.
+\end{equation}
+Due to the fact that the operators $\hat{\nu}_{\text{coulomb}}$ and $\hat{\nu}_{\text{xc}}$ depend on the orbitals $\phi_i$, this equation is solved iteratively~\cite{nalewajski-perspectives}.
+
+Since the development of the DFT, many different forms of $E_{xc}$ functional have been published. They are organized in the so-called Jacob's ladder of functionals, consisting of 5~rungs. The first are functionals that include only the $\rho$ (Local Density Approximation --- LDA). The second take into consideration also its gradient $|\nabla \rho|$ (Generalized Gradient Approximation --- GGA). The next rung are meta-GGA approaches where the square of gradient of $\rho$ is also used. Another step towards improved accuracy of results are hybrid (or hyper-GGA) functionals, where the results of the DFT functionals are mixed with exact results, e.g., in B3LYP where the Hartree-Fock exchange energy is used as the exact one~\cite{b3lyp-1,b3lyp-2,b3lyp-3,b3lyp-4}. The most accurate functionals are called generalized RPA and they also consider unoccupied Kohn-Sham orbitals. The PBE functional used in this work belongs to the GGA group~\cite{pbe-1,pbe-2,pbe-3,pbe-4}.
+
+The dispersion energy is not included in standard Kohn-Sham calculations, but its contribution to the energy can be approximated using Grimme's correction~\cite{grimme-d3}.

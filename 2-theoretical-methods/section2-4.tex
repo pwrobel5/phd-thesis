@@ -1,0 +1,27 @@
+\section{Machine Learning}
+
+Machine Learning (ML) is a~subfield of the more broad field of Artificial Intelligence (AI). In general, it concentrates on the problem of construction of computer programs which are able to learn some knowledge without explicitly programming them for this purpose~\cite{geron-machine-learning}. The process of learning is defined as follows~\cite{mitchell-machine-learning}:
+\begin{displayquote}
+    "A computer program is said to learn from experience $E$ with respect to some class of tasks $T$ and performance measure $P$, if its performance at tasks in $T$, as measured by $P$, improves with experience $E$."
+\end{displayquote}
+
+This approach is different from the standard way to develop computer programs. As for the latter, the former starts with definition of the problem, but the rules of solving it are not explicitly set by the programmist, but instead they are implicitly extracted from initially known solutions for such problem called a~training dataset. This process is referred as learning or training. It lasts until the efficiency measure $P$ reaches the desired value. Usually from known data, some subset is extracted for model evaluation; this set is called the test dataset.
+
+There are different ML models commonly used, starting from simple such as linear and logistic regression or classification based on $k$-nearest neighbors algorithm and ending in more sophisticated ones such as Support Vector Machines (SVMs) and Neural Networks (NNs)~\cite{geron-machine-learning}.
+
+\subsection{Neural Networks}
+
+Neural Networks (NNs) are models which structure is inspired by attempts to develop a~mathematical description of information processing in biological systems. A~standard NN consists of $N$ layers of the so-called neurons, each having its inputs $\{ x_i \}$ with weights $\{ w_{ji} \}$ taken from the outputs of the neurons connected to its preceding layer and the outputs $\{ a_j \}$ serving as inputs to connected next-layer neurons. In addition, a~non-linear activation function $h$ is defined, because without it, a~set of layers could be replaced by a~single layer with linear combinations of weights. For $j$-th layer with $D$ inputs its output $a_j$ is defined as:
+\begin{equation}
+    a_j = h\left( \sum_{i = 1}^D w_{ji} x_i + w_{j0} \right).
+\end{equation}
+
+NN training is performed using the error backpropagation algorithm~\cite{bishop-machine-learning, geron-machine-learning}. In general, at the first step, the output of the whole network is calculated, then, in the last layer, the derivative of the cost function $P$ with respect to inputs to this layer are calculated. The weights of inputs $w_i$ are then updated in an~arbitrarily chosen approach, e.g. steepest gradient descent (SGD) algorithm:
+\begin{equation}
+    w_{ji}^{n + 1} = w_{ji}^{n} - \gamma \nabla P(\{ w_{ji} \},
+\end{equation}
+where $w_{ji}^{n + 1}$ is the updated value of weight $w_{ji}^{n}$ and $\gamma$ is the so-called learning rate, usually chosen in range of $10^{-3}$-$10^{-6}$. After that, the steps of computation of derivatives and updating weights are continued for other layers. The whole process is repeated until convergence (based on arbitrarily defined conditions) is reached.
+
+The use of NNs in computational chemistry is a~novel approach, however it has some successful applications such as modeling PES, thermodynamical properties~\cite{machine-learning-chemistry-review-1} or drug discovery~\cite{machine-learning-chemistry-review-2}. An interesting utilization for the purpose of this work is NN application in the task of learning from results of QC method to correctly predict the potential energy and forces for given system geometry. In terms of the definition quoted in the introduction to this section, the results of the QC calculations are the experience $E$, the set of tasks $T$ is to predict the value of energy and forces for the given geometry of the system, and the performance measure $P$ could be the mean squared error between the prediction of the NN and the energy and forces calculated by QC for the same geometry. After the NN is trained, it allows to perform a~MD simulation at a~computational cost significantly lower than that of the QC method used to obtain data for training geometries.
+
+At the moment some packages are available to learn the FF from known geometries of the given system, such as GPUMD~\cite{gpumd}, DeePMD-kit~\cite{deepmdkit} or Schnetpack~\cite{schnetpack} used in this work.

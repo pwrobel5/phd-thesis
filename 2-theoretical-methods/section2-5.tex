@@ -1,0 +1,15 @@
+\section{Computational details}
+
+Quantum Chemical (QC) calculations were performed using Gaussian 09~\cite{gaussian}. For the research presented in this work, either the MP2 or DFT method with PBE functional~\cite{pbe-1,pbe-2,pbe-3,pbe-4} and Grimme's D3 dispersion correction were utilized in the aug-cc-PVDZ basis.
+
+The initial structures for MD simulations were prepared with Packmol~\cite{packmol}.
+
+Classical MD simulations were performed in NAMD v~2.12~\cite{namd}. Usually, two versions of FFs were used: polarizable, based on Drude particles~\cite{ff-drude}, with parameters taken from APPLE\&P~\cite{ff-applep} (marked further as DP-FF) and nonpolarizable, with parameters taken from K\"{o}ddermann's~\cite{ff-koddermann} and Lopes' works~\cite{ff-lopes-padua} (marked further as NP-FF). For all systems studied, PBC were applied with electrostatic interactions taken into account using the particle mesh Ewald algorithm~\cite{ewald-mesh}. Simulations were performed in the NpT or NVT ensemble with Langevin dynamics and modified Nos\'{e}-Hoover Langevin barostat~\cite{nose-hoover-langevin-1,nose-hoover-langevin-2}.
+
+Ab initio MD simulations were performed in CP2K~\cite{cp2k}. For all of them, DFT methods were used with the PBE functional~\cite{pbe-1,pbe-2,pbe-3,pbe-4}, Grimme's D3 dispersion correction~\cite{grimme-d3}, the replacement of core electrons with Goedecker's pseudopotentials~\cite{goedecker-1,goedecker-2}, the molecularly optimized DZVP basis set and applying the Nos\'{e}-Hoover thermostat~\cite{nose-hoover-1,nose-hoover-2,nose-hoover-3,nose-hoover-4,nose-hoover-5,nose-hoover-6} in the NVT ensemble.
+
+For practical reasons, connected with the high computational cost of calculating the polarizability tensor, this work concentrates only on IR spectra.
+
+For the calculation of the theoretical IR spectra, the Fourier tool~\cite{cpmd-fourier} from the CPMD-contributed tools was used with applying the harmonic thermal correction. For smoothing the obtained results, superposition of Gaussian curves with arbitrarily set $\sigma$ (10~cm$^{-1}$ unless specified differently) was used to plot the spectra.
+
+System-specific details such as compositions of systems, temperature, pressure or length of obtained trajectories or exceptions to this general methodology are given in following chapters of this work describing individual cases.

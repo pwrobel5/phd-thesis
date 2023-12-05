@@ -1,0 +1,74 @@
+\ProvidesPackage{phd-thesis}
+
+\usepackage[margin=0.75in]{geometry}
+\usepackage[utf8]{inputenc}								%kodowanie znaków
+\usepackage[T1]{fontenc}								%kodowanie fontu
+\usepackage{graphicx}									%wstawianie grafik
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage[intlimits]{amsmath}
+\usepackage{booktabs}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{setspace}
+\usepackage{csquotes}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{afterpage}
+
+\definecolor{darkblue}{RGB}{0,51,102}
+
+%\linespread{1.3}										%interlinia 1,5
+
+\usepackage[
+  language=english,
+  backend=biber,
+  sorting=none,
+  citestyle=numeric-comp,
+  maxnames=20,
+  minnames=19,
+  defernumbers=true
+  ]{biblatex}
+\renewbibmacro{in:}{}									  %usunięcie "w:" przed tytułem czasopisma
+\DeclareFieldFormat[article]{pages}{#1}					%usunięcie "s." przed stronami w cytowaniu
+\DeclareFieldFormat{url}{\newline\mkbibacro{URL}\addcolon\space\url{#1}} % URL w nowej linii
+
+\addbibresource{bibliography.bib}
+\addbibresource{publications.bib}
+\addbibresource{other-publications.bib}
+
+\DeclareSourcemap{
+    \maps[datatype=bibtex, overwrite]{
+      \map{
+        \perdatasource{publications.bib}
+        \step[fieldset=KEYWORDS, fieldvalue=primary, append]
+      }
+      \map{
+        \perdatasource{bibliography.bib}
+        \step[fieldset=KEYWORDS, fieldvalue=secondary, append]
+      }
+      \map{
+        \perdatasource{other-publications.bib}
+        \step[fieldset=KEYWORDS, fieldvalue=ternary, append]
+      }
+    }
+}
+
+\DeclareFieldFormat{labelnumber}{\ifkeyword{primary}{\RN{#1}}{#1}}
+
+% brakety
+\DeclarePairedDelimiter\bra{\langle}{\rvert}
+\DeclarePairedDelimiter\ket{\lvert}{\rangle}
+
+\newtheorem{theorem}{Theorem}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \newpage}
